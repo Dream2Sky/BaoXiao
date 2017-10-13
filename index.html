@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <style>
+    body {
+      text-align: center;
+    }
+
+    .container form {
+      margin: 20px auto;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <form class="navbar-form navbar-left">
+      <div class="form-group">
+        <input type="text" name="totalprice" class="form-control" placeholder="总金额">
+        <input type="text" name="days" class="form-control" placeholder="天数">
+      </div>
+      <button type="button" name="calc" class="btn btn-default">计算</button>
+    </form>
+  </div>
+  <div class="container">
+    <table class="table table-hover table-bordered table-striped">
+      <thead>
+        <td>天数</td>
+        <td>金额</td>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script>
+    $("button").on('click', function () {
+      var totalPrice = $("input[name='totalprice']").val();
+      var days = $("input[name='days']").val();
+      if (totalPrice == '' || totalPrice == null) { totalPrice = 0; }
+      if (days == '' || days == null) { days = 1; }
+      calc(totalPrice, days);
+    })
+
+    var calc = function (totalPrice, days) {
+      var sum = 0.00;
+      var result = new Array();
+      var average = totalPrice / days;
+      for (var i = 0; i < days; i++) {
+        var tyt = RandomNum(-500, 500);
+        result.push(tyt / 100);
+        sum += tyt / 100;
+      }
+      var temp = sum / days;
+      var ohsum = 0;
+      for (var i = 0; i < days; i++) {
+        result[i] -= temp;
+        ohsum += result[i];
+      }
+      var tablehtml = "";
+      var ah = 0.0;
+      for (var i = 0; i < days; i++) {
+        var testsds = (average + result[i]);
+        if (i == days - 1) {
+          testsds = (totalPrice - ah);
+        }
+        ah += testsds;
+        console.log(ah);
+        tablehtml += "<tr><td>" + (i + 1) + "</td><td>" + testsds.toFixed(2) + "</td></tr>";
+      }
+
+      $("table tbody").html(tablehtml);
+    }
+
+    function RandomNum(Min, Max) {
+      var Range = Max - Min;
+      var Rand = Math.random();
+      var num = Min + Math.round(Rand * Range);
+      return num;
+    }
+  </script>
+</body>
+
+</html>
